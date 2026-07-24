@@ -1,6 +1,6 @@
 # Olist E-Commerce Data Warehouse 📦🇧🇷
 
-![Cover Image](pic/Cover Page.png)
+![Cover Image](pic/Cover%20Page.png)
 
 **Author:** Abdallah Ali Abdelgawad
 
@@ -18,7 +18,7 @@ The data engineering pipeline was built using **Microsoft SQL Server (T-SQL)** a
 ## 🗄️ Data Modeling (Star Schema)
 The Gold Layer is designed as a **Star Schema** to eliminate complex 6+ table joins found in the source OLTP system, significantly boosting BI performance[cite: 17].
 
-![Gold Star Schema ERD](PLACEHOLDER:_PUT_YOUR_GOLD_SCHEMA_IMAGE_LINK_HERE_like_image_d68a57.png)
+![Gold Star Schema ERD](pic/Gold%20Layer%20Star%20Schema.png)
 
 * **Fact Tables:** `Fact_Orders`, `Fact_Order_Items`, `Fact_Payments`, `Fact_Reviews`, `Fact_Marketing_Funnel`[cite: 17].
 * **Dimension Tables:** `Dim_Customer`, `Dim_Seller`, `Dim_Product`, `Dim_Date`[cite: 17].
