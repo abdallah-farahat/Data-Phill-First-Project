@@ -35,7 +35,7 @@ To handle massive data volumes and ensure lightning-fast analytical queries, the
 ## 📊 Analytical Reporting & BI
 The project culminates in a comprehensive **Power BI** dashboard built directly on top of the Gold Star Schema, addressing core business questions[cite: 17].
 
-![Power BI Dashboard](PLACEHOLDER:_PUT_YOUR_DASHBOARD_SCREENSHOT_LINK_HERE_like_Screenshot_2026-07-24_164524.jpg)
+![Power BI Dashboard](pic/PowerBi_DashBoard.png)
 
 ### 💡 Key Insights:
 * **Platform Scale:** Successfully processed 98K total orders, generating a total revenue of 13M with an Average Order Value (AOV) of $137.41[cite: 17].
@@ -46,4 +46,4 @@ The project culminates in a comprehensive **Power BI** dashboard built directly 
 ## 📁 Source Systems & Data Origin
 The source data consists of 11 highly normalized flat files from Kaggle, representing Olist's CRM (Marketing Funnel) and ERP (Orders, Payments, Products, Reviews) systems[cite: 17]. 
 
-![Source OLTP ERD](PLACEHOLDER:_PUT_YOUR_BRONZE_SOURCE_ERD_LINK_HERE_like_Order_Management_Review.jpg)
+![OLTP Database Design](pic/OLTP%20Database%20Design.png)
