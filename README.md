@@ -15,7 +15,7 @@
 [![Power BI](https://img.shields.io/badge/BI-Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)](#)
 [![Architecture](https://img.shields.io/badge/Architecture-Medallion-8A2BE2?style=for-the-badge)](#)
 
-<img src="https://img.shields.io/badge/Orders_Processed-98K-1DB954?style=flat-square"/> <img src="https://img.shields.io/badge/Total_Revenue-%2413M-1DB954?style=flat-square"/> <img src="https://img.shields.io/badge/AOV-%24137.41-1DB954?style=flat-square"/> <img src="https://img.shields.io/badge/Status-Complete-brightgreen?style=flat-square"/>
+<img src="https://img.shields.io/badge/Orders_Processed-99.4K-1DB954?style=flat-square"/> <img src="https://img.shields.io/badge/Revenue_(BRL)-R%2413M-1DB954?style=flat-square"/> <img src="https://img.shields.io/badge/AOV_(BRL)-R%24137.41-1DB954?style=flat-square"/> <img src="https://img.shields.io/badge/Status-Complete-brightgreen?style=flat-square"/>
 
 **Author:** Abdallah Ali Abdelgawad
 
@@ -27,7 +27,7 @@
 
 <div align="center">
 
-[🎯 Executive Summary](#-executive-summary) • [🏗️ Architecture](#️-architecture-the-medallion-pipeline) • [🗄️ Data Modeling](#️-data-modeling-star-schema-design) • [🚀 Performance](#-performance--scalability-engineering) • [📊 Insights](#-analytical-reporting--business-insights) • [📁 Source Data](#-source-systems--data-origin) • [🧠 Why It Matters](#-why-this-project-matters)
+[🎯 Executive Summary](#-executive-summary) • [🏗️ Architecture](#️-architecture-the-medallion-pipeline) • [🔍 Data Lineage & Auditing](#-data-lineage--auditing) • [🗄️ Data Modeling](#️-data-modeling-star-schema-design) • [🛠️ Data Quality Engineering](#️-data-quality-engineering) • [🚀 Performance](#-performance--scalability-engineering) • [📊 Insights](#-analytical-reporting--business-insights) • [📁 Source Data](#-source-systems--data-origin) • [▶️ Setup](#️-setup--execution) • [🧠 Why It Matters](#-why-this-project-matters)
 
 </div>
 
@@ -115,6 +115,20 @@ flowchart LR
 
 ---
 
+## 🔍 Data Lineage & Auditing
+
+Every load — Bronze, Silver, and Gold — writes structured audit records to a central `Audit.ETL_Log` table, not just console output. Each row captures:
+
+- **Full lineage chain** — every Gold row's `Batch_Id` links to the exact `Source_Batch_Id` in Silver that produced it, which links to the Bronze batch and original source file, end to end.
+- **Row-level accuracy** — `Rows_Inserted` / `Rows_Updated` / `Rows_Deleted` are captured via `MERGE`'s `OUTPUT $action` clause, not estimated from `@@ROWCOUNT`, which can't distinguish inserts from updates.
+- **Failure isolation** — `TRY/CATCH` blocks around every table load mean one bad table fails independently, with the exact SQL error, number, and state captured — not a silent partial load.
+
+Any question about the warehouse's state — what ran, when, how many rows, did anything fail — is answerable with a single query against `Audit.ETL_Log`, not by re-running the pipeline and hoping.
+
+<br/>
+
+---
+
 ## 🗄️ Data Modeling: Star Schema Design
 
 The Gold Layer eliminates the 6+ table joins required by the source OLTP system, collapsing them into a single, BI-optimized **Star Schema** that dramatically boosts query performance.
@@ -173,6 +187,25 @@ Applied to `Dim_Customer` and `Dim_Seller` to track geographical relocations ove
 
 ---
 
+## 🛠️ Data Quality Engineering
+
+Real Kaggle exports are messier than they look. A few of the issues found and resolved during this build:
+
+| Issue | Root Cause | Resolution |
+|---|---|---|
+| Silent row loss on ingest | `BULK INSERT` misparsed unquoted commas inside free-text fields (e.g. `"novo hamburgo, rio grande do sul, brasil"`), shifting columns and silently dropping the row | Switched to `FORMAT='CSV', FIELDQUOTE='"'` on affected loads |
+| `Fact_Orders` FK violations | `Silver.Erp_geolocation` held multiple rows per zip code, fanning out downstream joins | Deterministic `ROW_NUMBER()` dedup to one row per zip, fixed at the Silver layer, not patched around in Gold |
+| Non-unique "natural" keys | `order_item_id` and `review_id` are not globally unique in the source — items repeat per order, and Olist reuses `review_id` across different orders with identical review content | Composite primary keys: `(order_id, order_item_number)` and `(review_id, order_id)` |
+| Revenue accuracy | `canceled` and `unavailable` orders both represent payment collected without a valid sale (the latter refunds when an item sells in-store instead) | `Is_Revenue_Eligible` flag excludes both from revenue-facing measures |
+
+Currency is documented as **BRL** — an explicit assumption, since Olist operates purely domestically and the source data has no currency field.
+
+> **Note:** Payment method distribution reflects all recorded payments; revenue figures exclude canceled/unavailable orders per `Is_Revenue_Eligible`.
+
+<br/>
+
+---
+
 ## 🚀 Performance & Scalability Engineering
 
 This warehouse isn't just modeled well — it's physically tuned to stay fast as data grows:
@@ -210,16 +243,16 @@ The warehouse culminates in a comprehensive **Power BI** dashboard built directl
 
 <div align="center">
 
-| 📦 Orders | 💰 Revenue | 🧾 AOV | 📈 2017 → 2018 |
+| 📦 Orders | 💰 Revenue (BRL) | 🧾 AOV (BRL) | 📈 2017 → 2018 |
 |:---:|:---:|:---:|:---:|
-| **98K** | **$13M** | **$137.41** | **$5.6M → $7.6M** |
+| **99.4K** | **R$13M** | **R$137.41** | **R$5.6M → R$7.6M** |
 
 </div>
 
 ### 🏆 Top Categories by Revenue
 ```
-Health & Beauty   ████████████████████░░  $1.3M
-Watches & Gifts   ██████████████████░░░░  $1.2M
+Health & Beauty   ████████████████████░░  R$1.3M
+Watches & Gifts   ██████████████████░░░░  R$1.2M
 ```
 
 ### 💳 Payment Method Split
@@ -248,6 +281,23 @@ The warehouse is built on **11 highly normalized flat files** sourced from Kaggl
 <div align="center">
 <img src="pic/OLTP%20Database%20Design.png" alt="OLTP Database Design" width="85%"/>
 </div>
+
+<br/>
+
+---
+
+## ▶️ Setup & Execution
+
+Run in this exact order — later scripts depend on earlier ones (schemas, foreign keys, and lookup functions must exist first):
+
+1. `Creating_Database_with_Schemas.sql` — creates the database and Bronze/Silver/Gold/Staging/Audit schemas
+2. `DDL.sql` — creates the shared `Audit.ETL_Log` table
+3. `Staging_Schema.sql` → `Silver_DDL.sql` → `Gold_DDL.sql`
+4. `Functions.sql` — `Fn_Correct_Known_City`, `Fn_Collapse_Spaces`
+5. `EXEC Bronze.Load_Bronze;`
+6. `EXEC Silver.Load_Silver;`
+7. `EXEC Gold.Load_Gold;`
+8. Verify: `SELECT * FROM Audit.ETL_Log WHERE Status <> 'SUCCESS';` should return zero rows.
 
 <br/>
 
