@@ -1,6 +1,6 @@
 # Olist E-Commerce Data Warehouse 📦🇧🇷
 
-![Cover Image](PLACEHOLDER:_PUT_YOUR_COVER_IMAGE_LINK_HERE)
+![Cover Image](pic/Cover Page.png)
 
 **Author:** Abdallah Ali Abdelgawad
 
