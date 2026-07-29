@@ -124,7 +124,9 @@ Every load — Bronze, Silver, and Gold — writes structured audit records to a
 - **Failure isolation** — `TRY/CATCH` blocks around every table load mean one bad table fails independently, with the exact SQL error, number, and state captured — not a silent partial load.
 
 Any question about the warehouse's state — what ran, when, how many rows, did anything fail — is answerable with a single query against `Audit.ETL_Log`, not by re-running the pipeline and hoping.
-
+<div align="center">
+<img src="pic/Audit Table.png" alt="Audit Table" width="85%"/>
+</div>
 <br/>
 
 ---
