@@ -1,0 +1,110 @@
+<svg viewBox="0 0 1350 460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F1117"/>
+      <stop offset="100%" stop-color="#0B0D12"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="1350" height="460" fill="url(#bg)" rx="16"/>
+
+  <!-- Title & Subtitle -->
+  <text x="675" y="40" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" letter-spacing="3">OLIST DATA WAREHOUSE — ENTERPRISE PIPELINE ARCHITECTURE</text>
+  <text x="675" y="65" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle" letter-spacing="1">Powered by End-to-End Centralized Audit Logging &amp; Lineage Tracking</text>
+
+  <!-- Connecting Flow Lines -->
+  <g stroke="#334155" stroke-width="2.5" stroke-dasharray="6,6" fill="none">
+    <line x1="240" y1="210" x2="270" y2="210" />
+    <line x1="500" y1="210" x2="530" y2="210" />
+    <line x1="760" y1="210" x2="790" y2="210" />
+    <line x1="1020" y1="210" x2="1050" y2="210" />
+  </g>
+
+  <!-- ================= CARD 1: RAW ================= -->
+  <g transform="translate(30, 90)">
+    <rect width="210" height="260" rx="12" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+    <rect width="210" height="40" rx="12" fill="#21262D"/>
+    <text x="15" y="25" fill="#58A6FF" font-family="system-ui, sans-serif" font-size="13" font-weight="bold">01. RAW SOURCES</text>
+    
+    <g fill="#C9D1D9" font-family="system-ui, sans-serif" font-size="12">
+      <text x="20" y="75">📁 11 Disconnected Files</text>
+      <text x="20" y="110">🔗 CRM &amp; ERP Data</text>
+      <text x="20" y="145">⚠️ Zero Relationships</text>
+      <text x="20" y="180">❌ Unstructured Raw</text>
+      <text x="20" y="215">📥 Landing Zone</text>
+    </g>
+  </g>
+
+  <!-- ================= CARD 2: STAGING & BRONZE ================= -->
+  <g transform="translate(290, 90)">
+    <rect width="210" height="260" rx="12" fill="#161B22" stroke="#CD7F32" stroke-width="1.5" filter="url(#glow)"/>
+    <rect width="210" height="40" rx="12" fill="#21262D"/>
+    <text x="15" y="25" fill="#CD7F32" font-family="system-ui, sans-serif" font-size="13" font-weight="bold">02. STAGING &amp; BRONZE</text>
+    
+    <g fill="#C9D1D9" font-family="system-ui, sans-serif" font-size="12">
+      <text x="20" y="75">📥 Staging BULK INSERT</text>
+      <text x="20" y="110">🔄 Incremental Load</text>
+      <text x="20" y="145">📜 Full History Vault</text>
+      <text x="20" y="180">🏷️ Batch_Id Tracking</text>
+      <text x="20" y="215">🛡️ Audit Logged</text>
+    </g>
+  </g>
+
+  <!-- ================= CARD 3: SILVER ================= -->
+  <g transform="translate(550, 90)">
+    <rect width="210" height="260" rx="12" fill="#161B22" stroke="#8B949E" stroke-width="1.5"/>
+    <rect width="210" height="40" rx="12" fill="#21262D"/>
+    <text x="15" y="25" fill="#C9D1D9" font-family="system-ui, sans-serif" font-size="13" font-weight="bold">03. SILVER LAYER</text>
+    
+    <g fill="#C9D1D9" font-family="system-ui, sans-serif" font-size="12">
+      <text x="20" y="75">🧹 Cleansing &amp; Norm</text>
+      <text x="20" y="110">🛠️ Fn_Correct_Known_City</text>
+      <text x="20" y="145">🔍 Geo-Typo Fixes</text>
+      <text x="20" y="180">🔑 Composite Keys</text>
+      <text x="20" y="215">🛡️ Audit Logged</text>
+    </g>
+  </g>
+
+  <!-- ================= CARD 4: GOLD ================= -->
+  <g transform="translate(810, 90)">
+    <rect width="210" height="260" rx="12" fill="#161B22" stroke="#F2C811" stroke-width="2" filter="url(#glow)"/>
+    <rect width="210" height="40" rx="12" fill="#21262D"/>
+    <text x="15" y="25" fill="#F2C811" font-family="system-ui, sans-serif" font-size="13" font-weight="bold">04. GOLD LAYER</text>
+    
+    <g fill="#C9D1D9" font-family="system-ui, sans-serif" font-size="12">
+      <text x="20" y="75">⭐ Star Schema Model</text>
+      <text x="20" y="110">🔄 MERGE &amp; CDC Tracking</text>
+      <text x="20" y="145">⏳ SCD Type 2 History</text>
+      <text x="20" y="180">⚡ Columnstore &amp; Partitions</text>
+      <text x="20" y="215">🛡️ Audit Logged</text>
+    </g>
+  </g>
+
+  <!-- ================= CARD 5: POWER BI ================= -->
+  <g transform="translate(1070, 90)">
+    <rect width="210" height="260" rx="12" fill="#161B22" stroke="#F2C811" stroke-width="1.5"/>
+    <rect width="210" height="40" rx="12" fill="#21262D"/>
+    <text x="15" y="25" fill="#F2C811" font-family="system-ui, sans-serif" font-size="13" font-weight="bold">05. POWER BI</text>
+    
+    <g fill="#C9D1D9" font-family="system-ui, sans-serif" font-size="12">
+      <text x="20" y="75">📊 Interactive Dashboards</text>
+      <text x="20" y="110">📦 99.4K Orders Tracked</text>
+      <text x="20" y="145">💰 R$13M Revenue</text>
+      <text x="20" y="180">🚀 Enterprise Speed</text>
+      <text x="20" y="215">🎯 Single Source of Truth</text>
+    </g>
+  </g>
+
+  <!-- ================= GLOBAL AUDIT BANNER ================= -->
+  <g transform="translate(30, 375)">
+    <rect width="1250" height="50" rx="10" fill="#1F242C" stroke="#38BDF8" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="625" y="30" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">
+      🔒 Global Governance Backbone: [ Audit.ETL_Log ] tracking execution status, row counts, errors &amp; lineage across ALL pipeline layers
+    </text>
+  </g>
+
+</svg>
